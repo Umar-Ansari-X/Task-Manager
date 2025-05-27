@@ -1,0 +1,771 @@
+/* General styling for body and login container */
+
+@import url('https://fonts.googleapis.com/css2?family=Kavoon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    height: 100vh;
+    margin: 0;
+
+    transition: transform 0.3s ease;
+    background-image: linear-gradient(270deg,#3498db, #8614b4, #ffec4f);
+    background-size: 400% 400%; 
+    animation: gradientAnimation 10s ease infinite;
+
+
+}
+
+.buttons {
+    position: fixed; 
+    top: 50%; 
+    left: 5%; 
+    transform: translate(-50%, -50%); 
+    
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    z-index: 0;
+}
+
+.circle-btn {
+
+    margin: 20px;
+
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 50%;
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease;
+    background-image: linear-gradient(90deg, #6fdaff, #ab2fff);
+    background-size: 400% 400%; 
+    animation: gradientAnimation 2s ease infinite; 
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4); 
+
+}
+
+
+#add-event-btn {
+
+    margin: 20px;
+
+
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 50%;
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease;
+    background-image: linear-gradient(90deg, #6fdaff, #ab2fff);
+    background-size: 400% 400%; 
+    animation: gradientAnimation 2s ease infinite;
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4); 
+
+}
+
+
+#select-date-btn {
+
+
+    margin: 20px;
+
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 50%;
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease;
+    background-image: linear-gradient(90deg, #6fdaff, #ab2fff);
+    background-size: 400% 400%;
+    animation: gradientAnimation 2s ease infinite; 
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4); 
+
+}
+
+
+
+
+#task-manager-title {
+    position: fixed;
+
+    padding-bottom: 820px;
+    font-family: "Acme", sans-serif;
+    font-size:6rem;
+    color: #ffff; 
+    animation: fadeIn 2s ease-in-out, glow 2s infinite alternate ease-in-out;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    
+}
+
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes fadeIn {
+    0% { 
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.main-title {
+
+
+    font-family: 'Kavoon', sans-serif;
+    font-size: 8em; 
+    color: #ffffff;
+    
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+    
+    
+    margin-bottom: 40px;
+    margin-top: -90px; 
+    text-align: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 360px; 
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Montserrat', sans-serif;
+
+
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: calc(100% ); 
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ba53f5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+
+
+.login-container button:hover {
+    background-color: #58008a; 
+}
+
+.signup-message {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-message a {
+    color: #ff0048;
+    text-decoration: none;
+}
+
+.signup-message a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+.slider-container {
+    position: fixed;
+    width: 1400px;
+    max-width: 1400px;
+    overflow: hidden;
+    margin: auto;
+
+    z-index: 1;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-card {
+    flex: 0 0 33.3333%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 700px; 
+    width: 350px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: scale(0.8);
+    opacity: 0.6;
+    transition: transform 0.3s, opacity 0.3s;
+    box-sizing: border-box; 
+    overflow: hidden;
+}
+
+.events {
+
+    overflow-y: auto;
+    overflow-x: hidden; 
+}
+
+
+.slider-card h3 {
+    font-size: 1.5em;
+    margin-bottom: -10px;
+}
+
+.slider-card p {
+
+    margin-top: 10px;
+
+    font-family: 'Montserrat', sans-serif;
+    
+
+    font-size: 1.2em;
+    margin: 20px 0;
+}
+
+.slider-card.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+#prev-btn, #next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#prev-btn {
+    left: 10px;
+}
+
+#next-btn {
+    right: 10px;
+}
+
+
+
+.event-slot {
+    width: 470px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    color: #fff;
+    box-sizing: border-box; 
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    position: relative; 
+
+}
+
+.event-slot p {
+    margin: 0;
+}
+
+.event-slot .remove-event {
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+.signup-message {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-message a {
+    color: #4CAF50; 
+    text-decoration: none;
+}
+
+.signup-message a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+.signup-container {
+    width: 100%;
+    max-width: 360px; 
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    font-family: 'Montserrat', sans-serif;
+
+
+}
+
+.signup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.signup-container input {
+    width: calc(100% );
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+}
+
+.signup-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ba53f5; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+
+
+}
+
+
+
+.signup-container button:hover {
+    background-color: #58008a; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#add-event-btn:hover {
+    transform: translateX(-50%) scale(1.1); 
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4); 
+
+
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    
+    100% {
+        background-position: 0% 50%;
+    }
+
+
+
+}
+
+
+.modal {
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px 0 5px;
+}
+
+input, textarea, select {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+#eventColor {
+    width: 100%; 
+    height: 40px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    cursor: pointer;
+    appearance: none; 
+}
+
+#eventColor::-webkit-color-swatch {
+    border: none; 
+    border-radius: 5px; 
+}
+
+#eventColor::-moz-color-swatch {
+    border: none; 
+}
+
+#saveEvent {
+    background-color: #ba53f5; 
+    color: white;
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    font-size: 16px;
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.3s; 
+    display: inline-block; 
+}
+
+#saveEvent:hover {
+    background-color: #ba53f5; 
+    transform: scale(1.05); 
+}
+
+#saveEvent:focus {
+    outline: none; 
+    box-shadow: 0 0 0 2px rgba(235, 52, 61, 0.5); 
+}
+
+#eventName {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+#eventDescription {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+#timeRangeStart {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+#timeRangeEnd {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+
+
+
+
+
+#select-date-btn:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4); 
+}
+
+#date-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+#date-modal .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+}
+
+#go-to-date-btn {
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#go-to-date-btn:hover {
+    background-color: #6a0dad;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.circle-btn:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+
+
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 1000px; 
+    height: 100%;
+    background-color: #f4f4f4;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, right 0.3s ease; 
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+.sidebar h3 {
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sidebar li.ongoing {
+    background-color: #eb343d;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+#color-options {
+    position: absolute;
+    width: 40px;
+    background: #f8f9fa; 
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+    z-index: 1000; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 8px; 
+    max-height: 600px;
+    overflow-y: auto; 
+}
+
+.color-option {
+    width: 40px; 
+    height: 40px;
+    border: 2px solid transparent; 
+    cursor: pointer;
+    margin-bottom: 10px; 
+    border-radius: 50%;
+    transition: border-color 0.3s ease, transform 0.3s ease; 
+}
+
+.color-option:hover {
+    border-color: #007bff;
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+#logout-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+#logout-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #58008a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#logout-btn:hover {
+    background-color: #58008a;
+}
+
+
+
+
+
+
+
+
+
+
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+

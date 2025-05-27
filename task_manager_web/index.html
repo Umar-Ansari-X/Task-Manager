@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <title>Task Manager</title>
+
+    
+</head>
+<body>
+
+    <h1 id="task-manager-title">Task Manager</h1>
+
+
+    <div class="slider-container">
+        <button id="prev-btn">&#10094;</button>
+        <div class="slider"></div>
+        <button id="next-btn">&#10095;</button>
+
+    </div>
+
+    
+    <div class="buttons">
+
+        <button id="add-event-btn">+</button>
+        <button id="select-date-btn">📅</button>
+        <button id="upcoming-events-btn" class="circle-btn">🔔</button>
+
+    </div>
+
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Event</h2>
+            <form id="event-form">
+                <label for="timeRangeStart">Start Time:</label>
+                <select id="timeRangeStart" name="timeRangeStart"></select>
+
+                <label for="timeRangeEnd">End Time:</label>
+                <select id="timeRangeEnd" name="timeRangeEnd"></select>
+
+                <label for="eventName">Name of Event:</label>
+                <input type="text" id="eventName" name="eventName" required maxlength="30">
+
+                <label for="eventDescription">Description:</label>
+                <textarea id="eventDescription" name="eventDescription" required></textarea>
+
+                <label for="eventColor">Color:</label>
+                <input type="color" id="eventColor" name="eventColor">
+
+                <button type="submit" id="saveEvent">Done</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="event-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-details">&times;</span>
+            <h3 id="details-title"></h3>
+            <p id="details-date"></p>
+            <p id="details-time"></p>
+
+
+            <p id="details-description"></p>
+            <button id="edit-event-btn">Edit</button>
+
+            
+        </div>
+    </div>
+
+
+    <div id="edit-event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-edit-modal">&times;</span>
+            <h3>Edit Event</h3>
+    
+            <label for="edit-event-name">Name:</label>
+            <input type="text" id="edit-event-name">
+    
+            <label for="edit-event-description">Description:</label>
+            <textarea id="edit-event-description"></textarea>
+    
+            <label for="edit-event-color">Color:</label>
+            <input type="color" id="edit-event-color">
+    
+            <button id="save-event-changes">Save</button>
+        </div>
+    </div>
+
+
+
+
+    <div id="date-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select Date</h2>
+            <input type="date" id="date-picker">
+            <button id="go-to-date-btn">Go to Date</button>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div id="upcoming-events-sidebar" class="sidebar hidden">
+        <h3>Upcoming Events</h3>
+        <ul id="upcoming-events-list">
+        </ul>
+    </div>
+
+    <input type="color" id="color-picker" style="display: none;">
+    <div id="color-options" style="display: none;">
+        <button class="color-option" style="background-color: #788cde;"></button>
+        <button class="color-option" style="background-color: #bc7abc;"></button>
+        <button class="color-option" style="background-color: #e46c8c;"></button>
+        <button class="color-option" style="background-color: #e46b67;"></button>
+        <button class="color-option" style="background-color: #4aa079;"></button>
+        <button class="color-option" style="background-color: #479e98;"></button>
+        <button class="color-option" style="background-color: #8795a0;"></button>
+        <button class="color-option" style="background-color: #d6bde7;"></button>
+        <button class="color-option" style="background-color: #f5b6c2;"></button>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </div>
+
+
+
+
+    <div id="logout-container">
+        <form id="logout-form" action="/calendar/logout.php" method="POST">
+            <button type="submit" id="logout-btn">Logout</button>
+        </form>
+    </div>
+
+
+    <script>
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+
+
+    const slider = document.querySelector('.slider');
+    const colorPicker = document.getElementById('color-picker');
+    const colorOptions = document.getElementById('color-options');
+    let currentCard = null;
+
+    slider.addEventListener('click', (event) => {
+        const card = event.target.closest('.slider-card');
+
+        if (!card || !card.classList.contains('active')) {
+        return; 
+    }
+
+    if (event.target.classList.contains('remove-event')) {
+                        return;
+                        }
+
+        if (event.target.classList.contains('event-slot')) {
+                        return; 
+                        }
+
+        console.log(event.target.classList)
+
+        if (event.target.classList.contains('modal')) {
+        return;
+        }
+
+        if (card) {
+            currentCard = card;
+            const rect = card.getBoundingClientRect();
+            colorOptions.style.display = 'block';
+            colorOptions.style.top = `${rect.top + window.scrollY}px`;
+            colorOptions.style.left = `${rect.right + window.scrollX}px`;
+        }
+    });
+
+    colorOptions.addEventListener('click', (event) => {
+        const colorOption = event.target.closest('.color-option');
+
+
+
+        if (colorOption && currentCard) {
+            const selectedColor = colorOption.style.backgroundColor;
+
+
+            const date = document.querySelector('.slider-card.active').dataset.date;
+
+            console.log(date)
+            localStorage.setItem(`cardColor_${date}`, selectedColor);
+
+
+            currentCard.style.backgroundColor = selectedColor;
+            colorOptions.style.display = 'none';
+        }
+    });
+
+    colorPicker.addEventListener('input', (event) => {
+        if (currentCard) {
+            const selectedColor = event.target.value;
+            currentCard.style.backgroundColor = selectedColor;
+            colorPicker.style.display = 'none'; 
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!colorOptions.contains(event.target) && !event.target.closest('.slider-card')) {
+            colorOptions.style.display = 'none';
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+
+
+
+    fetch('tasks.php')
+        .then(response => response.json())
+        .then(data => {
+
+                
+
+
+            const slider = document.querySelector('.slider');
+            const sliderWidth = slider.offsetWidth;
+
+            const cardWidth = 466.66; 
+            const offset = 474; 
+
+            let currentIndex = 730;
+
+            function formatTime(time) {
+                return time.split(':').slice(0, 2).join(':');
+            }
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `slider-card ${index === currentIndex ? 'active' : ''}`;
+                card.dataset.date = item.date;
+
+
+
+
+                let eventsHTML = '';
+                item.events.forEach(event => {
+                    eventsHTML += `
+                        <div class="event-slot" data-event-id="${event.id}" style="background-color:${event.color} ;">
+                            <p>${formatTime(event.timeRangeStart)} ➜ ${formatTime(event.timeRangeEnd)} ✦ ${event.name}</p>
+                            <span class="remove-event" data-event-id="${event.id}">&times;</span>
+                        </div>`;
+
+                    
+                });
+
+                
+
+                card.innerHTML = `
+                    <h3>${item.dayOfWeek}</h3>
+                    <p>${item.formattedDate}</p>
+                    <div class="events">${eventsHTML}</div>
+                `;
+                
+
+                const date = card.dataset.date;
+                const savedColor = localStorage.getItem(`cardColor_${date}`);
+
+                if (savedColor) {
+                    card.style.backgroundColor = savedColor;
+                }
+
+
+                slider.appendChild(card);
+            });
+
+
+
+
+
+            
+            function updateSlider() {
+                const offsetAmount = -(currentIndex * cardWidth) + offset;
+                slider.style.transform = `translateX(${offsetAmount}px)`;
+
+                document.querySelectorAll('.slider-card').forEach((card, index) => {
+                    card.classList.remove('active');
+                    card.style.transform = `scale(${index === currentIndex ? 1 : 0.8})`;
+                    card.style.opacity = index === currentIndex ? 1 : 0.6;
+                });
+
+                document.querySelector(`.slider-card[data-date="${data[currentIndex].date}"]`).classList.add('active');
+            }
+
+            document.getElementById('prev-btn').addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : data.length - 1;
+                updateSlider();
+            });
+
+            document.getElementById('next-btn').addEventListener('click', () => {
+                currentIndex = (currentIndex < data.length - 1) ? currentIndex + 1 : 0;
+                updateSlider();
+            });
+
+            updateSlider(); 
+
+            slider.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-event')) {
+
+
+
+                    
+                    const eventId = event.target.dataset.eventId;
+                    
+                    fetch(`remove_event.php?id=${eventId}`, { method: 'DELETE' })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                event.target.closest('.event-slot').remove();
+                            } else {
+                                console.error('Failed to remove event:', data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+
+
+
+
+
+                        fetch('tasks.php')
+        .then(response => response.json())
+        .then(data => {
+
+
+
+
+            function formatTime(time) {
+                return time.split(':').slice(0, 2).join(':');
+            }
+
+                        const sidebar = document.getElementById('upcoming-events-sidebar');
+        
+                const now = new Date();
+
+                const combineDateTime = (dateStr, timeStr) => {
+                    const [year, month, day] = dateStr.split('-').map(Number);
+                    const [hour, minute, second] = timeStr.split(':').map(Number);
+                    return new Date(year, month - 1, day, hour, minute, second);
+                };
+
+                const upcomingEvents = data
+                    .flatMap(day => day.events.map(event => ({
+                        ...event,
+                        fullStartTime: combineDateTime(day.date, event.timeRangeStart),
+                        fullEndTime: combineDateTime(day.date, event.timeRangeEnd),
+                    })))
+                    .filter(event => event.fullStartTime >= now)
+                    .sort((a, b) => a.fullStartTime - b.fullStartTime)
+                    .slice(0, 10);
+
+                    
+
+                const eventList = document.getElementById('upcoming-events-list');
+                eventList.innerHTML = '';
+
+
+                upcomingEvents.forEach(event => {
+                    const eventItem = document.createElement('li');
+                    const eventDate = new Date(event.fullStartTime).toLocaleDateString();
+                    eventItem.textContent = `${eventDate} from ${formatTime(event.timeRangeStart)} to ${formatTime(event.timeRangeEnd)} ✦ ${event.name}`;
+                    
+                    if (new Date(event.timeRangeStart) <= now && now <= new Date(event.timeRangeEnd)) {
+                        eventItem.classList.add('ongoing');
+                        eventItem.textContent += " (Ongoing)";
+                    }
+
+                    eventList.appendChild(eventItem);
+                });
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+                        
+                }
+            });
+
+
+
+
+
+            function addEventListeners() {
+    const eventSlots = document.querySelectorAll('.event-slot');
+    const eventDetailsModal = document.getElementById('event-details-modal');
+    const editEventModal = document.getElementById('edit-event-modal');
+    const editEventBtn = document.getElementById('edit-event-btn');
+    const closeDetailsBtn = document.getElementById('close-details');
+    const closeEditModalBtn = document.getElementById('close-edit-modal');
+    const saveEventChangesBtn = document.getElementById('save-event-changes');
+    let currentEvent; 
+    let activeCard; 
+
+    eventSlots.forEach(eventSlot => {
+        eventSlot.addEventListener('click', (eventt) => {
+            if (eventt.target.classList.contains('remove-event')) {
+                return; 
+            }
+
+            const eventId = eventSlot.dataset.eventId;
+
+            const event = data
+                .flatMap(day => day.events)
+                .find(evt => evt.id == eventId);
+
+            if (event) {
+                currentEvent = event; 
+                activeCard = eventSlot.closest('.slider-card');
+                document.getElementById('details-title').textContent = event.name;
+                document.getElementById('details-date').textContent = `${activeCard.querySelector('h3').textContent}, ${activeCard.querySelector('p').textContent}`;
+                document.getElementById('details-time').textContent = `Time: ${formatTime(event.timeRangeStart)} - ${formatTime(event.timeRangeEnd)}`;
+                document.getElementById('details-description').textContent = event.description;
+                eventDetailsModal.style.display = 'flex';
+            } else {
+                console.error('Event not found:', eventId);
+            }
+        });
+    });
+
+    editEventBtn.addEventListener('click', () => {
+        document.getElementById('edit-event-name').value = currentEvent.name;
+        document.getElementById('edit-event-description').value = currentEvent.description;
+        document.getElementById('edit-event-color').value = currentEvent.color;
+
+        eventDetailsModal.style.display = 'none';
+        editEventModal.style.display = 'flex';
+    });
+
+    closeDetailsBtn.addEventListener('click', () => {
+        eventDetailsModal.style.display = 'none';
+    });
+
+    closeEditModalBtn.addEventListener('click', () => {
+        editEventModal.style.display = 'none';
+    });
+
+    saveEventChangesBtn.addEventListener('click', () => {
+        const updatedName = document.getElementById('edit-event-name').value;
+        const updatedDescription = document.getElementById('edit-event-description').value;
+        const updatedColor = document.getElementById('edit-event-color').value;
+
+        fetch('update_event.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: currentEvent.id,
+                name: updatedName,
+                description: updatedDescription,
+                color: updatedColor
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const eventSlot = activeCard.querySelector(`[data-event-id="${currentEvent.id}"]`);
+                if (eventSlot) {
+                    eventSlot.style.backgroundColor = updatedColor;
+                    eventSlot.querySelector('p').innerHTML = `${formatTime(currentEvent.timeRangeStart)} ➜ ${formatTime(currentEvent.timeRangeEnd)} ✦ ${updatedName}`;
+                }
+
+                editEventModal.style.display = 'none';
+            } else {
+                console.error('Failed to update event:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating event:', error);
+        });
+    });
+}
+
+            addEventListeners();
+
+
+
+
+            document.getElementById('upcoming-events-btn').addEventListener('click', () => {
+
+
+
+
+
+
+                fetch('tasks.php')
+        .then(response => response.json())
+        .then(data => {
+
+
+
+
+            function formatTime(time) {
+                return time.split(':').slice(0, 2).join(':');
+            }
+
+
+
+            const sidebar = document.getElementById('upcoming-events-sidebar');
+                
+                sidebar.classList.toggle('hidden');
+
+                const now = new Date();
+
+                const combineDateTime = (dateStr, timeStr) => {
+                    const [year, month, day] = dateStr.split('-').map(Number);
+                    const [hour, minute, second] = timeStr.split(':').map(Number);
+                    return new Date(year, month - 1, day, hour, minute, second);
+                };
+
+                const upcomingEvents = data
+                    .flatMap(day => day.events.map(event => ({
+                        ...event,
+                        fullStartTime: combineDateTime(day.date, event.timeRangeStart),
+                        fullEndTime: combineDateTime(day.date, event.timeRangeEnd),
+                    })))
+                    .filter(event => event.fullStartTime >= now)
+                    .sort((a, b) => a.fullStartTime - b.fullStartTime)
+                    .slice(0, 10);
+
+                    
+
+                const eventList = document.getElementById('upcoming-events-list');
+                eventList.innerHTML = '';
+
+
+                upcomingEvents.forEach(event => {
+                    const eventItem = document.createElement('li');
+                    const eventDate = new Date(event.fullStartTime).toLocaleDateString();
+                    eventItem.textContent = `${eventDate} from ${formatTime(event.timeRangeStart)} to ${formatTime(event.timeRangeEnd)} ✦ ${event.name}`;
+                    
+                    if (new Date(event.timeRangeStart) <= now && now <= new Date(event.timeRangeEnd)) {
+                        eventItem.classList.add('ongoing');
+                        eventItem.textContent += " (Ongoing)";
+                    }
+
+                    eventList.appendChild(eventItem);
+                });
+
+                if (sidebar.classList.contains('hidden')) {
+        sidebar.style.transform = 'translateX(100%)'; 
+    } else {
+        sidebar.style.transform = 'translateX(0)';
+    }
+
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const modal = document.getElementById('event-modal');
+    const closeBtn = document.querySelector('.close');
+
+    document.getElementById('add-event-btn').addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    document.getElementById('event-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const timeRangeStart = document.getElementById('timeRangeStart').value;
+        const timeRangeEnd = document.getElementById('timeRangeEnd').value;
+        const eventName = document.getElementById('eventName').value;
+        const eventDescription = document.getElementById('eventDescription').value;
+        const eventColor = document.getElementById('eventColor').value;
+        const currentDate = document.querySelector('.slider-card.active').dataset.date;
+
+        fetch('add_event.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                date: currentDate,
+                timeRangeStart,
+                timeRangeEnd,
+                name: eventName,
+                description: eventDescription,
+                color: eventColor
+            })
+        })
+        .then(response => response.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                if (data.status === 'success') {
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    fetch('tasks.php')
+                    .then(response => response.json())
+                    .then(data => {
+
+
+                        
+                        
+                        const newEvent = {
+                        id: data.eventId,
+                        name: eventName,
+                        description: eventDescription,
+                        timeRangeStart: timeRangeStart,
+                        timeRangeEnd: timeRangeEnd,
+                        color: eventColor,
+                        date: currentDate
+                    };
+
+                    const dayIndex = data.findIndex(day => day.date === currentDate);
+                    if (dayIndex !== -1) {
+                        data[dayIndex].events.push(newEvent);
+                    } else {
+                        data.push({
+                            date: currentDate,
+                            events: [newEvent]
+                        });
+                        
+                    }                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        function formatTime(time) {
+                return time.split(':').slice(0, 2).join(':');
+            }
+
+                        const sidebar = document.getElementById('upcoming-events-sidebar');
+                
+                const now = new Date();
+
+                const combineDateTime = (dateStr, timeStr) => {
+                    const [year, month, day] = dateStr.split('-').map(Number);
+                    const [hour, minute, second] = timeStr.split(':').map(Number);
+                    return new Date(year, month - 1, day, hour, minute, second);
+                };
+
+                const upcomingEvents = data
+                    .flatMap(day => day.events.map(event => ({
+                        ...event,
+                        fullStartTime: combineDateTime(day.date, event.timeRangeStart),
+                        fullEndTime: combineDateTime(day.date, event.timeRangeEnd),
+                    })))
+                    .filter(event => event.fullStartTime >= now)
+                    .sort((a, b) => a.fullStartTime - b.fullStartTime)
+                    .slice(0, 10);
+
+                    
+
+                const eventList = document.getElementById('upcoming-events-list');
+                eventList.innerHTML = '';
+
+
+                upcomingEvents.forEach(event => {
+                    const eventItem = document.createElement('li');
+                    const eventDate = new Date(event.fullStartTime).toLocaleDateString();
+                    eventItem.textContent = `${eventDate} from ${formatTime(event.timeRangeStart)} to ${formatTime(event.timeRangeEnd)} ✦ ${event.name}`;
+                    
+                    if (new Date(event.timeRangeStart) <= now && now <= new Date(event.timeRangeEnd)) {
+                        eventItem.classList.add('ongoing');
+                        eventItem.textContent += " (Ongoing)";
+                    }
+
+                    eventList.appendChild(eventItem);
+                });
+
+
+
+
+
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    const activeCard = document.querySelector(`.slider-card[data-date="${currentDate}"]`);
+                    if (activeCard) {
+                        const newEvent = document.createElement('div');
+                        newEvent.className = 'event-slot';
+                        newEvent.style.backgroundColor = eventColor;
+                        newEvent.innerHTML = 
+
+
+                                `<p>${timeRangeStart} ➜ ${timeRangeEnd} ✦ ${eventName}</p>
+                                <span class="remove-event" data-event-id="${data.eventId}">&times;</span>`;
+              
+                                newEvent.addEventListener('click', (eventt) => {
+
+                                    if (eventt.target.classList.contains('remove-event')) {
+                        return; 
+                        }
+                                    
+                document.getElementById('details-title').textContent = eventName;
+                document.getElementById('details-date').textContent = `${currentDate}, ${document.querySelector('.slider-card.active h3').textContent}`;
+                document.getElementById('details-time').textContent = `Time: ${timeRangeStart} - ${timeRangeEnd}`;
+                document.getElementById('details-description').textContent = eventDescription;
+                document.getElementById('event-details-modal').style.display = 'flex';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            });
+                         
+                        activeCard.querySelector('.events').appendChild(newEvent);
+                    }
+
+
+
+                    
+                    modal.style.display = 'none';
+                } else {
+                    console.error('Failed to add event:', data.message);
+                }
+            } catch (e) {
+                console.error('Failed to parse response:', text);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById('close-details').addEventListener('click', () => {
+    document.getElementById('event-details-modal').style.display = 'none';
+});
+
+    function generateTimeOptions() {
+        const options = [];
+        for (let h = 0; h < 24; h++) {
+            for (let m = 0; m < 60; m += 30) {
+                const time = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+                options.push(time);
+            }
+        }
+        return options;
+    }
+
+    function populateTimeSelect(selectElement) {
+        const options = generateTimeOptions();
+        selectElement.innerHTML = options.map(time => `<option value="${time}">${time}</option>`).join('');
+    }
+
+    populateTimeSelect(document.getElementById('timeRangeStart'));
+    populateTimeSelect(document.getElementById('timeRangeEnd'));
+
+
+
+
+
+    document.getElementById('select-date-btn').addEventListener('click', () => {
+    document.getElementById('date-modal').style.display = 'flex';
+});
+
+
+function updateSlider() {
+    const sliderWidth = document.querySelector('.slider').offsetWidth;
+    const cardWidth = 466.66;
+    const offset = 474;
+    const selectedDate = document.getElementById('date-picker').value;
+
+    const offsetAmount = -(currentIndex * cardWidth) + offset;
+    document.querySelector('.slider').style.transform = `translateX(${offsetAmount}px)`;
+
+    document.querySelectorAll('.slider-card').forEach((card, index) => {
+        card.classList.remove('active');
+        card.style.transform = `scale(${index === currentIndex ? 1 : 0.8})`;
+        card.style.opacity = index === currentIndex ? 1 : 0.6;
+    });
+
+    document.querySelector(`.slider-card[data-date="${selectedDate}"]`).classList.add('active');
+}
+
+document.querySelector('#date-modal .close').addEventListener('click', () => {
+    document.getElementById('date-modal').style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === document.getElementById('date-modal')) {
+        document.getElementById('date-modal').style.display = 'none';
+    }
+});
+
+
+
+
+document.getElementById('go-to-date-btn').addEventListener('click', () => {
+    const selectedDate = document.getElementById('date-picker').value;
+    const selectedCard = document.querySelector(`.slider-card[data-date="${selectedDate}"]`);
+    
+    if (selectedCard) {
+        currentIndex = Array.from(document.querySelectorAll('.slider-card')).indexOf(selectedCard);
+        updateSlider();
+        document.getElementById('date-modal').style.display = 'none';
+    } else {
+        alert('Date not found in the range!');
+    }
+});
+
+
+
+
+
+
+
+    const today = new Date();
+const minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 730);
+const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 730);
+
+document.getElementById('date-picker').setAttribute('min', minDate.toISOString().split('T')[0]);
+document.getElementById('date-picker').setAttribute('max', maxDate.toISOString().split('T')[0]);
+
+
+
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    </script>
+</body>
+</html>

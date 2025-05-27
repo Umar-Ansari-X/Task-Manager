@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="signup-container">
+        <form action="sign_up.php" method="POST">
+            <h2>Sign Up</h2>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" 
+                   required 
+                   pattern="(?=.*[A-Z]).{8,}" 
+                   title="Password must be at least 8 characters long and include at least one uppercase letter">
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Log in here</a>.</p>
+    </div>
+</body>
+</html>
+
