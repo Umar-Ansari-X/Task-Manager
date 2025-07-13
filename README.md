@@ -3,6 +3,8 @@ A  web calendar that lets people add colour-coded tasks, edit them in-place and 
 
 **Images:** 
 ![Login Screenshot](images/login.png)
+
+
 ![Cards Screenshot](images/cards.png)
 
 ---
