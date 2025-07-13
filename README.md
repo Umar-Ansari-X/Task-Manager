@@ -1,10 +1,10 @@
 # 🗓️ Task-Manager
 A  web calendar that lets people add colour-coded tasks, edit them in-place and see their whole week at a glance.
 
-**Images:** \n
+**Images:**
+
+
 ![Login Screenshot](images/login.png)
-
-
 ![Cards Screenshot](images/cards.png)
 
 ---
